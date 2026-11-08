@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мебель 3D</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header id="topbar">
+  <span id="brand">Мебель 3D</span>
+  <button id="btn-back" class="ghost hidden">&#8592; Проекты</button>
+  <input id="proj-name" class="hidden" spellcheck="false" autocomplete="off" aria-label="Название проекта">
+  <span id="proj-no" class="hidden" title="Идентификатор проекта (имя папки в data/)"></span>
+  <span id="save-status" class="hidden" aria-live="polite"></span>
+  <button id="btn-undo" class="ghost hidden icon-btn" aria-label="Отменить последнее действие" title="Отменить (Ctrl+Z)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+  <button id="btn-redo" class="ghost hidden icon-btn" aria-label="Вернуть отменённое действие" title="Вернуть (Ctrl+Y)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5V20"/></svg></button>
+  <div class="spacer"></div>
+  <button id="btn-library" class="ghost">Библиотека</button>
+  <button id="btn-theme" class="ghost" aria-pressed="false" title="Светлая/тёмная тема">Тема</button>
+</header>
+
+<main id="screen-projects">
+  <div class="projects-head">
+    <h1>Мебель 3D</h1>
+    <button id="btn-new" class="primary">+ Новый проект</button>
+  </div>
+  <div id="projects-grid" class="grid"></div>
+</main>
+
+<main id="screen-library" class="hidden">
+  <div class="projects-head">
+    <h1>Библиотека</h1>
+    <div class="tabs">
+      <button data-lib-tab="decors" class="primary">Декоры</button>
+      <button data-lib-tab="handles">Фурнитура</button>
+      <button data-lib-tab="examples">Примеры</button>
+    </div>
+    <button id="btn-lib-add" class="primary">+ Добавить</button>
+  </div>
+  <div id="library-grid" class="grid"></div>
+</main>
+
+<main id="screen-editor" class="hidden">
+  <aside id="leftbar">
+    <details class="panel" open>
+      <summary class="panel-title"><h2>Предметы</h2></summary>
+      <div id="add-row">
+        <button data-add="wardrobe">Шкаф</button>
+        <button data-add="chest">Тумба</button>
+        <button data-add="kitchen_base">Кухня, низ</button>
+        <button data-add="kitchen_wall">Кухня, верх</button>
+        <button data-add="sliding_wardrobe">Шкаф-купе</button>
+        <button data-add="kitchen_corner">Кухня, угол</button>
+        <button data-add="bed">Кровать</button>
+        <button data-add="table">Стол</button>
+      </div>
+      <ul id="item-list"></ul>
+    </details>
+  </aside>
+  <section id="view-wrap">
+    <div id="view"></div>
+    <div id="view-toolbar">
+      <button id="btn-open" class="ghost" aria-pressed="false">Открыть двери</button>
+      <button id="btn-fit" class="ghost">Вписать</button>
+      <button id="btn-day" class="ghost" aria-pressed="false">Ночь</button>
+      <button id="btn-present" class="ghost" aria-pressed="false">Презентация</button>
+      <button id="btn-shot" class="ghost">Скриншот PNG</button>
+      <button id="btn-video" class="ghost" title="Записать облет канваса в WebM с облетом">▶ Запись видео</button>
+    </div>
+  </section>
+  <aside id="sidebar">
+    <details class="panel" open>
+      <summary class="panel-title"><h2>Параметры</h2></summary>
+      <div id="params"></div>
+    </details>
+    <details class="panel" open>
+      <summary class="panel-title"><h2>Комната</h2></summary>
+      <div id="room-params"></div>
+    </details>
+    <details class="panel" open>
+      <summary class="panel-title"><h2>Деталировка</h2></summary>
+      <table id="cut-table">
+        <thead><tr><th>Деталь</th><th>Размер, мм</th><th>Кол-во</th></tr></thead>
+        <tbody id="cut-body"></tbody>
+      </table>
+      <p id="cut-sum" class="muted"></p>
+    </details>
+    <details class="panel" id="export-panel">
+      <summary class="panel-title"><h2>Сдать клиенту</h2></summary>
+      <ol class="steps">
+        <li>Проверьте деталировку и комнату.</li>
+        <li>Заполните цену и пароль (если нужен).</li>
+        <li>Создайте HTML — файл скачается.</li>
+        <li>Опубликуйте файл по инструкции ниже.</li>
+      </ol>
+      <div id="export-params"></div>
+    </details>
+    <details class="panel" id="video-panel">
+      <summary class="panel-title"><h2>Видео и публикация</h2></summary>
+      <div id="video-params">
+        <div class="prow"><label for="video-duration">Длина облёта</label>
+          <select id="video-duration">
+            <option value="8" selected>8 сек — полуоборот</option>
+            <option value="16">16 сек — полный круг</option>
+            <option value="24">24 сек — полтора круга</option>
+          </select>
+        </div>
+        <div class="btn-row">
+          <button id="btn-video-start" class="primary">● Записать видео</button>
+          <button id="btn-video-stop">■ Стоп</button>
+        </div>
+        <p id="video-status" class="muted" aria-live="polite">Видео пишется из окна 3D: включается облет, файл скачивается как .webm. Во время записи не трогайте модель.</p>
+        <p class="muted">Публикация файлов — в панели «Сдать клиенту» (шаг 4, инструкция появятся после создания HTML).</p>
+      </div>
+    </details>
+    <details class="panel" id="ai-panel">
+      <summary class="panel-title"><h2>ИИ-чат</h2></summary>
+      <div id="ai-params">
+        <div class="prow"><label for="ai-baseurl">Endpoint</label><input id="ai-baseurl" placeholder="https://api.openai.com/v1" spellcheck="false"></div>
+        <div class="prow"><label for="ai-model">Модель</label><input id="ai-model" placeholder="Имя модели" spellcheck="false"></div>
+        <div class="prow"><label for="ai-key">Ключ</label><input id="ai-key" type="password" autocomplete="off"></div>
+        <p class="hint">Endpoint и модель — адрес и имя ИИ-сервиса, который вы подключили. Ключ хранится только на этом компьютере.</p>
+        <div class="btn-row">
+          <button id="btn-ai-save">Сохранить настройки</button>
+          <button id="btn-ai-test">Проверить</button>
+        </div>
+        <label class="visually-hidden" for="ai-prompt">Описание мебели</label>
+        <textarea id="ai-prompt" rows="4" placeholder="Например: кухня 3 метра, нижние модули по 600, 2 двери, верх 3 модуля, дуб сонома"></textarea>
+        <div class="btn-row">
+          <button id="btn-ai-generate" class="primary">Собрать из описания</button>
+          <button id="btn-ai-variants">3 варианта</button>
+          <button id="btn-ai-edit">Поправить</button>
+        </div>
+        <p id="ai-status" class="muted" aria-live="polite"></p>
+        <div id="ai-variants"></div>
+      </div>
+    </details>
+  </aside>
+</main>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <form id="dlg-form" method="dialog">
+    <h3 id="dlg-title"></h3>
+    <label id="dlg-label" class="hidden" for="dlg-input"></label>
+    <input id="dlg-input" class="hidden" spellcheck="false" autocomplete="off">
+    <p id="dlg-text" class="muted"></p>
+    <div class="btn-row dlg-actions">
+      <button type="button" id="dlg-cancel">Отмена</button>
+      <button type="submit" id="dlg-ok" class="primary">ОК</button>
+    </div>
+  </form>
+</dialog>
+<div id="toast" class="hidden" aria-live="polite"></div>
+
+<script type="module" src="/js/main.js"></script>
+<script type="module" src="/js/video.js"></script>
+</body>
+</html>

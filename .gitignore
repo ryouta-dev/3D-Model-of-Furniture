@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+node_modules/
+data/
+
+# Локальные данные агентских инструментов (не часть проекта)
+.sharrowkin/
+.opencode/
+.impeccable/

@@ -1,0 +1,6 @@
+{
+  "name": "mebel3d",
+  "private": true,
+  "type": "module",
+  "description": "Локальный конструктор 3D-презентаций корпусной мебели"
+}
